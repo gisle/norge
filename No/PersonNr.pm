@@ -58,7 +58,7 @@ sub personnr_ok
               $nr[5]*9 + $nr[4]*8 +
               $nr[3]*1 + $nr[2]*6 +
               $nr[1]*7 + $nr[0]*3;
-    my $rest = sum % 11;
+    my $rest = $sum % 11;
     return 0 if $rest == 1;
     if ($rest == 0) {
 	return 0 if $rest != $nr[9];
@@ -90,11 +90,11 @@ nummeret er ugyldig.
 
 =cut
 
-sub er_mann;
+sub er_mann
 {
     my $nr = personnr_ok(shift);
     croak "Feil i personnummer" unless $nr;
-    (int(substr($nr, 8, 1)) % 2) == 0;
+    (int(substr($nr, 8, 1)) % 2) != 0;
 }
 
 
