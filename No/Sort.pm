@@ -63,7 +63,7 @@ L<perllocale>
 
 =head1 AUTHORS
 
-Hallvard B Furuseth <h.b.furuseth@usit.uio.no>, Gisle Aas <aas@sn.no>
+Hallvard B Furuseth <h.b.furuseth@usit.uio.no>, Gisle Aas <gisle@aas.no>
 
 =cut
 
