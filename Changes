@@ -1,6 +1,22 @@
+1999-10-13  Gisle Aas <gisle@aas.no>
+
+        * Versjon 1.06
+
+        * No::Dato::tekstdato vil ikke bruke stor forbokstav i
+          månedsnavnet.
+
+        * No::PersNr patch fra Petter Reinholdtsen <pere@hungry.com> slik
+          at den håndterer genererte personnummer slik de gjør det ved UiTø.
+
+        * No::Telenor oppdatert til prisene som gjelder fra 1999-07-01
+
+        * Reformatert dokumentasjon
+
+
+
 1998-10-12  Gisle Aas <aas@sn.no>
 
-       	* Version 1.05
+       	* Versjon 1.05
 
 	* Forenklet mod_11() funksjon.
 
