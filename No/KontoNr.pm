@@ -2,13 +2,55 @@ package No::KontoNr;
 
 require Exporter;
 @ISA=qw(Exporter);
-@EXPORT_OK = qw(kontonr_ok modulus_10);
-
-$VERSION = sprintf("%d.%02d", q$Revision$ =~ /(\d+)\.(\d+)/);
+@EXPORT_OK = qw(kontonr_ok kredittkortnr_ok
+		nok_f
+                mod_11 mod_10);
 
 use strict;
+use vars qw($VERSION);
+$VERSION = sprintf("%d.%02d", q$Revision$ =~ /(\d+)\.(\d+)/);
 
-sub kontonr_ok {
+=head1 NAME
+
+No::KontoNr - Check Norwegian bank account numbers
+
+=head1 SYNPOSIS
+
+  use No::KontoNr qw(kontonr_ok);
+
+  if (personnr_ok($nr)) {
+      # ...
+  }
+
+=head1 DESCRIPTION
+
+B<This documentation is written in Norwegian.>
+
+Denne modulen kan brukes for å sjekke norske bankontonumre.  Det siste
+sifferet i et banknummer er kontrollsiffer og må stemme overens med
+resten for at det skal være et gyldig nummer.
+
+Modulen inneholder også funksjoner for å regne ut modulus 10 og
+modulus 11 kontrollsiffer.  Disse algoritmene brukes blandt annet hvis
+du vil generere KID når du skal fylle ut giroblanketter.  De finnes
+også en fuksjon som kan brukes for å formatere kronebeløp.
+
+Ingen av rutinene eksporteres implisitt.  Du må be om dem.
+
+=head1 FUNCTIONS
+
+
+=head2 kontonr_ok($nr)
+
+Funksjonen kontonr_ok() vil returnere FALSE hvis kontonummeret gitt
+som argument ikke er gyldig.  Hvis nummeret er gyldig så vil
+funksjonen returnere $nr på standard form.  Nummeret som gis
+til kontonr_ok() kan inneholde blanke eller punktumer.
+
+=cut
+
+sub kontonr_ok
+{
     my $nr = shift || return 0;
     $nr =~ s/[ \.]//g;  # det er ok med mellomrom og punktum i nummeret
 
@@ -17,73 +59,123 @@ sub kontonr_ok {
     return 0 if $nr =~ /\D/;
 
     # Siste siffer er kontrollsiffer, plukk det av
-    $nr =~ s/(\d)$//;
-    my $kontroll = $1; 
-
-    my $sum = 0;
-    my $i = 0;
-    my $vekt;
-    for $vekt (5,4,3,2,7,6,5,4,3,2) {
-        $sum += substr($nr, $i++, 1) * $vekt;
-    }
-    my $k = 11 - ($sum % 11);
-    return 0 if $k == 10;  # disse er alltid ulovlige
-    $k = 0 if $k == 11;
-    return 0 if $k != $kontroll;
+    my $last  = chop($nr);
+    my $check = mod_11($nr);
+    return 0 if !defined($check) || $check != $last;
     return $nr;
 }
 
-sub modulus_10
+=head2 kredittkortnr_ok($nr)
+
+Funksjonen kredittkortnr_ok() vil returnere FALSE hvis
+kredittkortnummeret gitt som argument ikke er gyldig.  Hvis nummeret
+er gyldig så vil funksjonen returnere $nr på standard form.  Nummeret
+som gis til kredittkortnr_ok() kan inneholde blanke eller punktumer.
+
+=cut
+
+sub kredittkortnr_ok
 {
-    my $tall = shift;
-    $tall =~ s/[^\d]//g;
-    my $siffersum = 0;
-    my $vekt = 2;
-    my $siffer;
-    foreach $siffer (reverse split(//, $tall)) {
-        my $produkt = $siffer * $vekt;
-        # print "$siffer×$vekt=$produkt\n";
-        while ($produkt >= 10) {
-            $siffersum++;
-            $produkt -= 10;
+    my $nr = shift || return 0;
+    $nr =~ s/[ \.]//g;  # det er ok med mellomrom og punktum i nummeret
+
+    #XXX: Må egentlig sjekke prefix for å finne ut hvor langt nummeret
+    # skal være.  Forsjellige selskaper opererer med ulik lengde.
+    return 0 unless length($nr) == 16;
+    return 0 if $nr =~ /\D/;
+
+    # Siste siffer er kontrollsiffer
+    my $last  = chop($nr);
+    return 0 if $last != mod_10($nr);
+    return $nr;
+}
+
+
+=head2 nok_f($tall)
+
+Denne funksjonen vil formatere tall på formen:
+
+     300,50
+   4.300,-
+
+Det skulle passe bra når man skal skrive ut kronebeløp.  Ørebeløpet
+"00" byttes ut med strengen "- ", dvs. at tallene laines opp korrekt
+hvis du høyrejusterer dem.
+
+=cut
+
+sub nok_f
+{
+    my $kr = sprintf "%.2f", shift;
+    $kr =~ s/\.(\d\d)$/,$1/;
+    $kr =~ s/,00$/,- /;
+    1 while $kr =~ s/(\d)(\d\d\d)(?=[.,])/$1.$2/;
+    $kr;
+}
+
+
+=head2 mod_10($tall)
+
+Denne funksjonen regner ut modulus 10 kontrollsifferet til tallet gitt
+som argument.  Hvis argumentet inneholder tegn som ikke er siffer så
+ignoreres de.
+
+Modulus 10 algoritmen benyttes blandt annet for å generere
+kontrollsiffer til de fleste internasjonale kredittkortnummer.
+
+=cut
+
+sub mod_10
+{
+    my $digits = shift;
+    my $sum = 0;  # which we subtract from :-)
+    my $factor = 2;
+    my $s;
+    foreach $s (reverse ($digits =~ /(\d)/g)) {
+        my $p = $s * $factor;
+        if ($p >= 10) {
+            $sum--;
+            $p -= 10;
         }
-        $siffersum += $produkt;
-        $vekt = 3 - $vekt;
+        $sum -= $p;
+        $factor = 3 - $factor;  # alternates between 2 and 1
     }
-    # print "SUM=$siffersum\n";
-    (- $siffersum) % 10;
+    $sum % 10;
 }
 
 
-1;
+=head2 mod_11($tall)
 
-__END__
+Denne funksjonen regner ut modulus 11 kontrollsifferet til tallet gitt
+som argument.  Hvis argumentet inneholder tegn som ikke er siffer så
+ignoreres de.  Når denne algoritmen benyttes så kan det være tall som
+det ikke finnes noe gyldig kontrollsiffer for, og da vil mod_11()
+returnere verdien I<undef>.
 
-# Følgende er også en mod_10 sjekker.  Er den raskere?
+Modulus 11 algoritmen benyttes blandt annet for å generere
+kontrollsiffer til norske bankkontonummer.
 
-## credit card verification
-## by Randal L. Schwartz <merlyn@stonehenge.com>
-## last revision: 12/14/1995
+=cut
 
-package Card;
-
-## return true iff the $number is a valid card
-## non digits are ignored in the string
-## works on both 13-number and 16-number cards
-sub validate {
-    my @revdigits = reverse (shift =~ /(\d)/g);
-    my $sum;
-    $sum += &digitsum(shift (@revdigits))
-        + &digitsum(2*shift (@revdigits))
-            while @revdigits;
-    not $sum % 10;              # return
-}
-
-sub digitsum {
-    my @digits = shift =~ /(\d)/g;
-    my $sum;
-    $sum += shift @digits while @digits;
-    $sum;
+sub mod_11
+{
+    my @digits = reverse (shift =~ /(\d)/g);
+    my @factors = (2..7) x ((@digits-1)/6+1);
+    my $sum = 0;
+    $sum += shift(@digits) * shift(@factors) while @digits;
+    my $k = 11 - ($sum % 11);
+    if ($k > 9) {
+	return undef if $k == 10;
+	return 0;
+    }
+    $k;
 }
 
 1;
+
+=head1 AUTHOR
+
+Gisle Aas <aas@sn.no>
+
+=cut
+
