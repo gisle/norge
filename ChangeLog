@@ -1,3 +1,15 @@
+1998-01-03  Gisle Aas <aas@sn.no>
+
+	* Versjon 1.01
+
+	* Returverdien til kontonr_ok() var manglet siste siffer.
+
+	* Ny funksjon kontonr_f()
+
+	* Forsøk på å håndtere personnr for personer født etter
+	  år 2000.
+
+
 1997-06-25  Gisle Aas <aas@sn.no>
 
 	* Versjon 1.00
