@@ -1,6 +1,6 @@
 Dette er en samling av perl moduler som gjør det lettere å være
 perlprogrammerer i Norge.  Jeg har her prøvd å samle likt og ulikt av
-slikt som er spesielt for Norge.  Jeg har følgende idéer:
+slikt som er spesielt for Norske forhold:
 
 No::Dato
   Formattering av datoer i henhold til norsk standard (på norsk)
@@ -15,3 +15,6 @@ No::PersonNr
 No::KontoNr
   Validere bank- og postkontonummer
   Modulus 10 algiritme for å lage KID
+
+-- 
+Gisle Aas <aas@sn.no>
