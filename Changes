@@ -1,3 +1,19 @@
+2004-05-21  Gisle Aas <gisle@ActiveState.com>
+
+        * Versjon 1.08
+
+        * No::Dato::hverdag implementert.
+
+        * No::Dato::helligdager vil ikke legge til " (søndag)"
+          til navnet for helligdager som også er det.
+
+        * No::Dato: Dagnavnene har ikke stor forbokstav mer.
+
+        * No::Dato: Dokumentere mer presist hvordan 'helligdag'
+          skal forstås her.
+
+
+
 2003-10-06  Gisle Aas <gisle@ActiveState.com>
 
         * Versjon 1.07
