@@ -62,8 +62,8 @@ norske helligdagene.
 );
 
 @UKEDAGER = qw(Søndag Mandag Tirsdag Onsdag Torsdag Fredag Lørdag);
-@MANEDER = qw(Januar Februar Mars      April   Mai      Juni
-              Juli   August  September Oktober November Desember);
+@MANEDER = qw(januar februar mars      april   mai      juni
+              juli   august  september oktober november desember);
 
 my %hellig_cache = ();
 
