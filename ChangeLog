@@ -1,3 +1,15 @@
+1997-02-24  Gisle Aas <aas@sn.no>
+
+	* Versjon 0.03
+
+	* Sjekk at datodelen i personnumre er en lovlig dato.
+
+	* kredittnr_ok() burde virke for flere korttyper nå.
+	  kredittnr_ok() returnerer korttypen istedenfor nummeret.
+
+	* rutiner for uc/lc av latin1 i No::Sort
+
+
 1997-02-17  Gisle Aas <aas@sn.no>
 
 	* Versjon 0.02
