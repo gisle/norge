@@ -1,3 +1,13 @@
+1998-04-01  Gisle Aas <aas@sn.no>
+
+	* Versjon 1.04
+
+	* No::PersonNr: Korrigert hånderingen av personer født etter
+          år 2000.  Vi får igjen problemer etter år 2054.  Ny kode
+          baser på opplysninger fra Erik Lie-Nielsen, som hadde
+          funnet fram et brev fra "Sentralkontoret for folkeregistrering".
+
+
 1998-03-27  Gisle Aas <aas@sn.no>
 
 	* Versjon 1.03
