@@ -7,61 +7,126 @@ require Exporter;
 $VERSION = sprintf("%d.%02d", q$Revision$ =~ /(\d+)\.(\d+)/);
 
 use strict;
+use Carp qw(croak);
+
+
+=head1 NAME
+
+No::PersonNr - Check Norwegian Social security numbers
+
+=head1 SYNPOSIS
+
+  use No::PersonNr qw(personnr_ok);
+
+  if (personnr_ok($nr)) {
+      # ...
+  }
+
+=head1 DESCRIPTION
+
+B<This documentation is written in Norwegian.>
+
+Denne modulen kan brukes for å sjekke norske personnummer.  De 2 siste
+siffrene i personnummerene er kontrollsiffre og må stemme overens med
+resten for at det skal være et gyldig nummer.  Modulen inneholder også
+funksjoner for å bestemme personens kjønn og personens fødselsdato.
+
+Ingen av rutinene eksporteres implisitt.  Du må be om dem.
+
+
+=head2 personnr_ok($nr)
+
+Funksjonen personnr_ok() vil returnere FALSE hvis personnummeret gitt
+som argument ikke er gyldig.  Hvis nummeret er gyldig så vil
+funksjonen returnere nummeret selv på standard form.  Nummeret som gis
+til personnr_ok() kan inneholde ' ' eller '-'.
+
+=cut
 
 sub personnr_ok
 {
-    die "NYI";
+    my $nr = shift;
+    return undef unless defined($nr);
+    $nr =~ s/[\s\-]+//g;
+    return 0 if $nr =~ /\D/;
+    return 0 if length($nr) != 11;
+    my @nr = split(//, $nr);
+
+    # Modulo 11 test
+    my $sum = $nr[8]*2 +
+              $nr[7]*5 + $nr[6]*4 +
+              $nr[5]*9 + $nr[4]*8 +
+              $nr[3]*1 + $nr[2]*6 +
+              $nr[1]*7 + $nr[0]*3;
+    my $rest = sum % 11;
+    return 0 if $rest == 1;
+    if ($rest == 0) {
+	return 0 if $rest != $nr[9];
+    } else {
+	return 0 if 11 - $rest != $nr[9];
+    }
+
+    $sum = $nr[9]*2 + $nr[8]*3 +
+           $nr[7]*4 + $nr[6]*5 +
+           $nr[5]*6 + $nr[4]*7 +
+           $nr[3]*2 + $nr[2]*3 +
+	   $nr[1]*4 + $nr[0]*5;
+    $rest = $sum % 11;
+    return 0 if $rest == 1;
+    if ($rest == 0) {
+	return 0 if $rest != $nr[10];
+    } else {
+	return 0 if 11 - $rest != $nr[10];
+    }
+
+    $nr;  # ok, return normalized number
 }
+
+
+=head2 er_mann($nr)
+
+Vil returnere TRUE hvis $nr tilhører en mann.  Rutinen vil croake hvis
+nummeret er ugyldig.
+
+=cut
 
 sub er_mann;
 {
-    die "NYI";
+    my $nr = personnr_ok(shift);
+    croak "Feil i personnummer" unless $nr;
+    (int(substr($nr, 8, 1)) % 2) == 0;
 }
+
+
+=head2 er_kvinne($nr)
+
+Vil returnere TRUE hvis $nr tilhører en kvinne.  Rutinen vil croake
+hvis nummeret er ugyldig.
+
+=cut
 
 sub er_kvinne { !er_mann(@_); }
 
+
+=head2 fodt_dato($nr)
+
+Vil returnere personens fødselsdato på formen "ÅÅÅÅ-MM-DD".  Rutinen
+vil croake hvis nummeret er ugyldig.
+
+=cut
+
 sub fodt_dato
 {
-    die "NYI";
+    my $nr = personnr_ok(shift);
+    croak "Feil i personnummer" unless $nr;
+    my $dato = substr($nr, 0, 6);
+    $dato =~ s/^(\d\d)(\d\d)(\d\d)$/$3-$2-$1/;
+
+    # XXX: Så var det det å kjenne igjen hvilket hundreår som er det
+    # riktige.
+    $dato = "19$dato";
+
+    $dato;
 }
 
 1;
-__END__
-
-bool fnr_ok(char *fdato, char *pnr)
-{
-   char fnr[12], *c;
-   int sum, rest;
-
-   strcpy(fnr, datosiffer(fdato));
-   strcat(fnr, pnr);
-
-   /* gjør det om til ordentlige tall */
-   for (c = fnr; *c; c++)
-      *c -= '0';
-
-   /* Modulo 11 test */
-   sum = fnr[8]*2 + fnr[7]*5 + fnr[6]*4 +
-         fnr[5]*9 + fnr[4]*8 + fnr[3]*1 + fnr[2]*6 +
-         fnr[1]*7 + fnr[0]*3;
-   rest = sum % 11;
-   if (rest == 1) return FALSE;
-   if (rest == 0) {
-      if (rest != fnr[9]) return FALSE;
-   } else {
-      if (11 - rest != fnr[9]) return FALSE;
-   }
-
-   sum = fnr[9]*2 + fnr[8]*3 + fnr[7]*4 + fnr[6]*5 +
-         fnr[5]*6 + fnr[4]*7 + fnr[3]*2 + fnr[2]*3 +
-         fnr[1]*4 + fnr[0]*5;
-   rest = sum % 11;
-   if (rest == 1) return FALSE;
-   if (rest == 0) {
-      if (rest != fnr[10]) return FALSE;
-   } else {
-      if (11 - rest != fnr[10]) return FALSE;
-   }
-
-   return TRUE;
-}
