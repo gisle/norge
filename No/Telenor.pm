@@ -10,6 +10,30 @@ use vars qw(%TAKSTER $DEBUG $VERSION);
 
 $VERSION = sprintf("%d.%02d", q$Revision$ =~ /(\d+)\.(\d+)/);
 
+
+=head1 NAME
+
+No::Telenor - Calculate telephone call prices in Norway
+
+=head1 SYNPOSIS
+
+  use No::Telenor qw(samtale_pris);
+  $kr = samtale_pris($time, 3600, "LFV");
+
+
+=head1 DESCRIPTION
+
+B<This documentation is written in Norwegian.>
+
+Denne modulen inneholder funksjonen samtale_pris().  Denne funksjonen
+vil beregne prisen på en telefonsamtale gitt tidspunkt, varighet og
+takst som parameter.  Funksjonen kjenner bare til sanntidstakstene som
+ble innført i 1997.  Forhåpentligvis vil jeg klare å oppdater
+funksjonen etterhvert som Telenor finner på nye sprell.
+
+=cut
+
+
 %TAKSTER = (
         # Takstnavn                    Start  Dag    Natt   Dagtakst
 	#                              pris   takst  takst  periode
@@ -35,6 +59,26 @@ if ($DEBUG) {
 	printf "%-3s %-30s %4.2f %5.2f %5.2f %02d-%02d\n", $_, @{$TAKSTER{$_}};
     }
 }
+
+
+=head2 samtale_pris($start, $varighet, $takst)
+
+Rutinen vil beregne samtale prisen i NOK.  Argumentet $start er
+starttidspunktet gitt som en standard perl 'time' verdi.  Argumentet
+$varighet er samtalens varighet i sekunder.  Argumentet $takst er en
+kort streng som forteller hvilken takst som skal brukes.  Følgende
+takser er støttet:
+
+   L     Lokaltakst
+   LFV   Lokaltakst Familie&Venner
+   R     Rikstakst
+   RFV   Rikstakst Familie&Venner
+   L+    Lokaltakst Pluss
+   R+    Rikstakst Pluss
+   M     Telenor Mobil
+   M+    Telenor Mobil Pluss
+
+=cut
 
 
 sub samtale_pris
@@ -98,3 +142,10 @@ sub samtale_pris
 }
 
 1;
+__END__
+
+=head1 AUTHOR
+
+Gisle Aas <aas@sn.no>
+
+=cut
