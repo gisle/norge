@@ -8,7 +8,7 @@ No::Dato
   Norske ukedager og månedsnavn.  Norske helligdager.
 
 No::Sort
-  Norsk sortering av Latin1 tekst
+  Norsk sortering av Latin1 tekst.  Også latin1 "up/down casing".
 
 No::Telenor
   Beregne priser på telefonsamtaler i henhold til Telenors satser
@@ -17,8 +17,9 @@ No::PersonNr
   Validere personnummer og ekstrahere diverse info fra nummeret.
 
 No::KontoNr
-  Validere bank- og postbankkontonummer
-  Modulus 10 algiritme for å lage KID
+  Validere bank- og postbankkontonummer samt kredittkortnummer.
+  Modulus 10 og modulus 11 algiritme for å lage KID.
+  Formattering av kronebeløp.
 
 Du må ha perl versjon 5.002 eller bedre for å bruke disse modulene.
 Installasjonen foregår ved å kjøre følgende kommandoer etter at du har
