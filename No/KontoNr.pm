@@ -3,7 +3,7 @@ package No::KontoNr;
 require Exporter;
 @ISA=qw(Exporter);
 @EXPORT_OK = qw(kontonr_ok kredittkortnr_ok
-		nok_f
+		kontonr_f nok_f
                 mod_11 mod_10);
 
 use strict;
@@ -44,8 +44,8 @@ Ingen av rutinene eksporteres implisitt.  Du må be om dem.
 
 Funksjonen kontonr_ok() vil returnere FALSE hvis kontonummeret gitt
 som argument ikke er gyldig.  Hvis nummeret er gyldig så vil
-funksjonen returnere $nr på standard form.  Nummeret som gis
-til kontonr_ok() kan inneholde blanke eller punktumer.
+funksjonen returnere $nr på standard form (11 siffer).  Nummeret som
+gis til kontonr_ok() kan inneholde blanke eller punktumer.
 
 =cut
 
@@ -62,8 +62,26 @@ sub kontonr_ok
     my $last  = chop($nr);
     my $check = mod_11($nr);
     return 0 if !defined($check) || $check != $last;
-    return $nr;
+    return "$nr$last";
 }
+
+
+=head2 kontonr_f($nr)
+
+Funksjonen kontonr_f() vil formattere et kontonummer på standard form
+("####.##.#####").  Hvis kontonummeret ikke er gyldig så byttes alle
+sifferene ut med "?".
+
+=cut
+
+sub kontonr_f
+{
+    my $nr = kontonr_ok(shift);
+    return "????.??.?????" unless $nr;
+    $nr =~ s/^(\d{4})(\d\d)(\d{5})$/$1.$2.$3/;
+    $nr;
+}
+
 
 =head2 kredittkortnr_ok($nr)
 
