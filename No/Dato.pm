@@ -142,7 +142,7 @@ sub helligdag (;$$)
 =item hverdag($time)
 
 Rutinen avgjør om en gitt date er en hverdag eller ikke.  Lørdag er
-her ikke regnet som hverdag her.
+her ikke regnet som hverdag.
 
 Argumentet kan være en vanlig $time verdi eller en streng på formen
 "ÅÅÅÅ-MM-DD".
