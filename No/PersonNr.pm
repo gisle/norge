@@ -79,7 +79,8 @@ sub personnr_ok
 	# eldste person tildelt fødelsnummer er født i 1855.
 	$date[0] += 1800;
     } else {
-	# vi har et problem igjen etter år 2054
+	# vi har et problem igjen etter år 2054.  Det er ikke helt
+	# avklart hva løsningen da vil være.
 	$date[0] += 2000;
     }
     return "" unless _is_legal_date(@date);
@@ -147,7 +148,7 @@ sub fodt_dato
 
 =head1 BUGS
 
-Vi vil få problemer etter år 2054.
+Denne koden vil få problemer for personer født etter år 2054.
 
 =head1 AUTHOR
 
