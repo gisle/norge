@@ -6,7 +6,7 @@
 # (det har du sikkert ikke!) så vil tilpasse litt etter hva som havner
 # i din log.
 #
-# Skrevet av: Gisle Aas <aas@sn.no>
+# Skrevet av: Gisle Aas <gisle@aas.no>
 
 use HTTP::Date qw(str2time);
 use No::Telenor qw(samtale_pris);
@@ -16,26 +16,32 @@ use No::KontoNr qw(nok_f);
 $LOKAL_PREFIKS    = 55;    # siden jeg bor i Bergen
 $LOKAL_TAKST      = "LFV"; # jeg har Familie&Venner
 
-open(LOG, shift || "/var/log/messages") or die;
+
+my $log = shift || "/var/log/messages";
+if ($log =~ /\.gz$/) {
+    $log = "gunzip -c $log|";
+}
+
+open(LOG, $log) or die;
 my $tot_dur   = 0;
 my $tot_local = 0;
 my $tot_riks  = 0;
 my $tot_price = 0;
 
 while (<LOG>) {
-    if (/:\s+ATDT(\d+)/) {
+    if (/kernel: ippp0: dialing [01] (\d+)/) {
 	#print;
 	$phone = $1;
 	$connect = undef;
-    } elsif (/CONNECT -- got it/) {
-    # epiri har vist at modemene bruker 12 sekunder på å forhandle seg imellom
-	$connect = extract_time($_) - 12;
+    } elsif (/kernel: isdn_net: ippp0 connected/) {
+	#print;
+	$connect = extract_time($_);
 	$ppp_up = undef;
-    } elsif (/Connection terminated/) {
+    } elsif (/kernel: isdn_net: local hangup ippp0/) {
 	if ($connect) {
 	    my $dur = extract_time($_) - $connect;
 	    $tot_dur += $dur;
-	    if ($phone =~ /^$LOKAL_PREFIKS/o) {
+	    if (local_phone($phone)) {
 		$tot_local += $dur;
 	    } else {
 		$tot_riks += $dur;
@@ -68,16 +74,24 @@ print  "\t\t     Riks:    ", dur2str($tot_riks), "\n";
 printf "\t\t     TOTAL:   %s  %12s\n", dur2str($tot_dur), nok_f($tot_price);
 
 
+sub local_phone
+{
+    my $phone = shift;
+    return 1 if $phone =~ /^$LOKAL_PREFIKS/o;
+    return 1 if $phone eq "81007007";
+    return 0;
+}
+
 sub takst
 {
     # jeg bor i Bergen
-    return $LOKAL_TAKST if shift =~ /^$LOKAL_PREFIKS/o;
+    return $LOKAL_TAKST if local_phone(shift);
     return "R";
 }
 
 sub extract_time
 {
-    str2time(substr($_[0], 0, 15) . " 1997");;
+    str2time(substr($_[0], 0, 15) . " " . ((localtime)[5]+1900));
 }
 
 sub time2iso
