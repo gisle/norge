@@ -149,9 +149,6 @@ __END__
 Prisberegningen kan bli unøyaktig hvis samtalen foregikk i overgangen
 mellom vinter- og sommertid eller omvendt.
 
-Jeg har heller ikke fått klarhet i hvilken takst som skal brukes på
-spesielle helligdager.  Det tas ikke hensyn til slike dager nå.
-
 =head1 AUTHOR
 
 Gisle Aas <aas@sn.no>
