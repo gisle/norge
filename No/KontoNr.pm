@@ -23,7 +23,7 @@ sub kontonr_ok {
     my $sum = 0;
     my $i = 0;
     my $vekt;
-    for $vekt (qw(5 4 3 2 7 6 5 4 3 2)) {
+    for $vekt (5,4,3,2,7,6,5,4,3,2) {
         $sum += substr($nr, $i++, 1) * $vekt;
     }
     my $k = 11 - ($sum % 11);
@@ -52,6 +52,38 @@ sub modulus_10
     }
     # print "SUM=$siffersum\n";
     (- $siffersum) % 10;
+}
+
+
+1;
+
+__END__
+
+# Følgende er også en mod_10 sjekker.  Er den raskere?
+
+## credit card verification
+## by Randal L. Schwartz <merlyn@stonehenge.com>
+## last revision: 12/14/1995
+
+package Card;
+
+## return true iff the $number is a valid card
+## non digits are ignored in the string
+## works on both 13-number and 16-number cards
+sub validate {
+    my @revdigits = reverse (shift =~ /(\d)/g);
+    my $sum;
+    $sum += &digitsum(shift (@revdigits))
+        + &digitsum(2*shift (@revdigits))
+            while @revdigits;
+    not $sum % 10;              # return
+}
+
+sub digitsum {
+    my @digits = shift =~ /(\d)/g;
+    my $sum;
+    $sum += shift @digits while @digits;
+    $sum;
 }
 
 1;
