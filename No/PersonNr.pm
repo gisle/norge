@@ -44,6 +44,9 @@ som argument ikke er gyldig.  Hvis nummeret er gyldig så vil
 funksjonen returnere $nr på standard form.  Nummeret som gis til
 personnr_ok() kan inneholde ' ' eller '-'.
 
+Standard form er her definert som 11 siffer uten noe skilletegn
+mellom tallgrupper.
+
 =cut
 
 sub personnr_ok
@@ -192,12 +195,10 @@ Skattedirektoratet, Sentralkontoret for folkeregistrering,
 
 Personnummersystemet håndterer kun årstall fra og med 1855 til og med 2054.
 
-=head1 BUGS
+=head1 AUTHORS
 
-None known.
-
-=head1 AUTHOR
-
-Gisle Aas <gisle@aas.no>
+Gisle Aas <gisle@aas.no>, Peter J. Acklam <pjacklam@online.no>, Petter
+Reinholdtsen <pere@hungry.com>, Hallvard B. Furuseth
+<h.b.furuseth@usit.uio.no>.
 
 =cut
