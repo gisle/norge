@@ -6,7 +6,8 @@ use vars qw(@ISA @EXPORT @EXPORT_OK $VERSION $DEBUG);
 require Exporter;
 @ISA=qw(Exporter);
 @EXPORT=qw(no_sort);
-@EXPORT_OK=qw(no_xfrm no_aa_xfrm);
+@EXPORT_OK=qw(no_xfrm no_aa_xfrm
+	      latin1_uc latin1_lc latin1_ucfirst latin1_lcfirst);
 
 $VERSION = sprintf("%d.%02d", q$Revision$ =~ /(\d+)\.(\d+)/);
 
@@ -51,6 +52,10 @@ this module under the name 'no_aa_xfrm':
 
 If you set the $No::Sort::DEBUG variable to a TRUE value, then we will
 make some extra noise on STDOUT while sorting.
+
+The module can also export functions for up/down casing ISO-8859/1
+strings.  These functions are called latin1_uc(), latin1_lc(),
+latin1_ucfirst(), latin1_lcfirst().
 
 =head1 SEE ALSO
 
@@ -122,6 +127,39 @@ sub no_aa_xfrm {
       $word =~ s/A[aA]/Å/g;
       $word =~ s/aa/å/g;
       no_xfrm($word);
+}
+
+# Some additional case convertion routines that does not really have
+# much to do with sorting.
+
+sub latin1_lc
+{
+    my $str = shift;
+    $str =~ tr[A-ZÀ-ÖØ-Þ]
+	      [a-zà-öø-þ];
+    $str;
+}
+
+sub latin1_uc
+{
+    my $str = shift;
+    $str =~ tr[a-zà-öø-þ]
+	      [A-ZÀ-ÖØ-Þ];
+    $str;
+}
+
+sub latin1_ucfirst
+{
+    my $str = shift;
+    $str =~ s/(.)/latin1_uc($1)/es;
+    $str;
+}
+
+sub latin1_lcfirst
+{
+    my $str = shift;
+    $str =~ s/(.)/latin1_lc($1)/es;
+    $str;
 }
 
 1;
