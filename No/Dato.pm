@@ -36,8 +36,8 @@ No::Dato - Norwegian dates
 B<This documentation is written in Norwegian.>
 
 Denne modulen tilbyr funksjoner for å håndtere det som er spesielt med
-datoer på norsk.  Dette gjelder blandt annet å finne fram til de
-norske helligdagene.
+datoer på norsk.  Dette gjelder blant annet å identifisere offentlige
+høytidsdager.
 
 Følgende funksjoner er tilgjengelig:
 
@@ -76,7 +76,7 @@ my %hellig_cache = ();
 
 Denne rutinen returnerer en dato formatert på formen:
 
-  Fredag, 7. februar 1997
+  Fredag, 7. februar 2004
 
 Argumentet er en vanlig perl $time verdi.  Hvis argumentet utelates så
 benyttes dagens dato.
@@ -95,11 +95,16 @@ sub tekstdato (;$)
 
 Rutinen avgjør om en gitt dato er en norsk helligdag eller ikke.  Hvis
 det er en helligdag så vil navnet på helligdagen bli returnert.  Hvis
-det er en vanlig hverdag så vil en tom streng (som er FALSE i perl)
-bli returnert.
+det er en vanlig hverdag eller lørdag så vil en tom streng (som er
+FALSE i perl) bli returnert.
 
 Argumentet kan være en vanlig $time verdi eller en streng på formen
 "ÅÅÅÅ-MM-DD".
+
+For denne funksjonen er "helligdag" definert til å være det samme som
+norsk offentlig høytidsdag samt søndager, dvs de dagene som er røde på
+kalenderen.  Dette inkluderer nyttårsdagen, samt 1. og 17. mai selv om
+disse egentlig ikke er hellige.
 
 =cut
 
@@ -142,8 +147,12 @@ bruke inneværende år.  Datostrengene er på formen:
 
    "ÅÅÅÅ-MM-DD Skjærtorsdag"
 
-Dvs. datoen formattert i henhold til ISO 8601 etterfulgt av navnet på
+Dvs. datoen formatert i henhold til ISO 8601 etterfulgt av navnet på
 helligdagen.  Listen vil være sortert på dato.
+
+For denne funksjonen er "helligdag" definert til å være det samme som
+norsk offentlig høytidsdag.  Søndagene er ikke tatt med selv om
+funksjonen helligdag(), beskrevet over, er TRUE for disse.
 
 =cut
 
