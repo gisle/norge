@@ -1,7 +1,7 @@
-use No::Dato qw(tekstdato helligdag helligdager);
+use No::Dato qw(tekstdato helligdag hverdag helligdager);
 use Time::Local qw(timelocal);
 
-print "1..15\n";
+print "1..21\n";
 
 $a = tekstdato(timelocal(0,0,12,2,1,97));
 print "$a\n";
@@ -34,6 +34,20 @@ for ('01-01', '03-27', '03-28', '03-31', '05-01', '05-08',
 print "\nSjekk noen tilfeldige andre datoer:\n";
 for ('01-02', '03-29', '05-30', '11-12') {
 	print "not " if helligdag("1997-$_");
+	print "ok $testno\n";
+	$testno++;
+}
+
+print "\nSjekke hverdager i 2004:\n";
+for ('01-02', '03-29', '12-31') {
+	print "not " unless hverdag("2004-$_");
+	print "ok $testno\n";
+	$testno++;
+}
+
+print "\nSjekke ikke hverdager i 2004:\n";
+for ('01-03', '04-09', '12-25') {
+	print "not " if hverdag("2004-$_");
 	print "ok $testno\n";
 	$testno++;
 }

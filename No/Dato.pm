@@ -5,7 +5,7 @@ use Carp ();
 
 require Exporter;
 @ISA=qw(Exporter);
-@EXPORT_OK = qw(tekstdato helligdag helligdager @UKEDAGER @MANEDER);
+@EXPORT_OK = qw(tekstdato helligdag hverdag helligdager @UKEDAGER @MANEDER);
 
 use strict;
 use vars qw(%SPECIAL_DAYS @UKEDAGER @MANEDER $VERSION);
@@ -108,7 +108,7 @@ disse egentlig ikke er hellige.
 
 =cut
 
-sub helligdag (;$)
+sub helligdag (;$$)
 {
     my $date = shift || time;
     my $year;
@@ -134,10 +134,24 @@ sub helligdag (;$)
 	    $weekday = (localtime(timelocal(12,0,0,$d, $m-1, $year-1900)))[6];
         }
         $day = "Søndag" if $weekday == 0;
+	$day = "Lørdag" if $weekday == 6 && $_[0];
     }
     $day;
 }
 
+=item hverdag($time)
+
+Rutinen avgjør om en gitt date er en hverdag eller ikke.  Lørdag er
+her ikke regnet som hverdag her.
+
+Argumentet kan være en vanlig $time verdi eller en streng på formen
+"ÅÅÅÅ-MM-DD".
+
+=cut
+
+sub hverdag {
+    return !helligdag(shift, 1);
+}
 
 =item helligdager($year)
 
