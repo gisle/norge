@@ -3,7 +3,7 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile(
 	NAME     => 'No',
-	VERSION  => '0.04',
+	VERSION  => '1.00',
 	
 	DISTNAME => 'Norge',
  	dist    => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
