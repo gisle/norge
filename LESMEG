@@ -7,19 +7,19 @@ No::Dato
   Formattering av datoer i henhold til norsk standard (på norsk)
   Norske ukedager og månedsnavn.  Norske helligdager.
 
+No::KontoNr
+  Validere bank- og postbankkontonummer samt kredittkortnummer.
+  Modulus 10 og modulus 11 algiritme for å lage KID.
+  Formattering av kronebeløp.
+
+No::PersonNr
+  Validere personnummer og ekstrahere diverse info fra nummeret.
+
 No::Sort
   Norsk sortering av Latin1 tekst.  Også latin1 "up/down casing".
 
 No::Telenor
   Beregne priser på telefonsamtaler i henhold til Telenors satser
-
-No::PersonNr
-  Validere personnummer og ekstrahere diverse info fra nummeret.
-
-No::KontoNr
-  Validere bank- og postbankkontonummer samt kredittkortnummer.
-  Modulus 10 og modulus 11 algiritme for å lage KID.
-  Formattering av kronebeløp.
 
 Du må ha perl versjon 5.002 eller bedre for å bruke disse modulene.
 Installasjonen foregår ved å kjøre følgende kommandoer etter at du har
@@ -31,8 +31,9 @@ siden du leser dette):
   make test
   make install
 
-Spørsmål eller forslag til ny funksjonalitet og forbedringer rettes
-til USENET News gruppen "no.perl".
+Spørsmål eller forslag til ny funksjonalitet og forbedringer kan
+rettes til USENET News gruppen "no.perl" eller direkte til
+forfatteren.
 
 © Gisle Aas 1997
 

@@ -14,7 +14,7 @@ $VERSION = sprintf("%d.%02d", q$Revision$ =~ /(\d+)\.(\d+)/);
 
 No::KontoNr - Check Norwegian bank account numbers
 
-=head1 SYNPOSIS
+=head1 SYNOPSIS
 
   use No::KontoNr qw(kontonr_ok);
 

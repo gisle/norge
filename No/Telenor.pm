@@ -15,7 +15,7 @@ $VERSION = sprintf("%d.%02d", q$Revision$ =~ /(\d+)\.(\d+)/);
 
 No::Telenor - Calculate telephone call prices in Norway
 
-=head1 SYNPOSIS
+=head1 SYNOPSIS
 
   use No::Telenor qw(samtale_pris);
   $kr = samtale_pris($time, 3600, "LFV");
@@ -27,8 +27,8 @@ B<This documentation is written in Norwegian.>
 
 Denne modulen inneholder funksjonen samtale_pris().  Denne funksjonen
 vil beregne prisen på en telefonsamtale gitt tidspunkt, varighet og
-takst som parameter.  Funksjonen kjenner bare til sanntidstakstene som
-ble innført fra og med i 1997.  Forhåpentligvis vil jeg klare å
+takst som parameter.  Funksjonen kjenner til sanntidstakstene som
+ble innført fra og med år 1997.  Forhåpentligvis vil jeg klare å
 oppdater funksjonen etterhvert som Telenor finner på nye sprell.
 
 =cut
@@ -148,6 +148,9 @@ __END__
 
 Prisberegningen kan bli unøyaktig hvis samtalen foregikk i overgangen
 mellom vinter- og sommertid eller omvendt.
+
+Jeg har heller ikke fått klarhet i hvilken takst som skal brukes på
+spesielle helligdager.  Det tas ikke hensyn til slike dager nå.
 
 =head1 AUTHOR
 

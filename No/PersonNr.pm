@@ -15,7 +15,7 @@ $VERSION = sprintf("%d.%02d", q$Revision$ =~ /(\d+)\.(\d+)/);
 
 No::PersonNr - Check Norwegian Social security numbers
 
-=head1 SYNPOSIS
+=head1 SYNOPSIS
 
   use No::PersonNr qw(personnr_ok);
 
@@ -161,6 +161,11 @@ sub fodt_dato
 }
 
 1;
+
+=head1 BUGS
+
+Takler ikke fødselsdatoer før år 1900 og etter år 2000.  Hvis noen kan
+fortelle meg hva algoritmen er så ville jeg være takknemlig.
 
 =head1 AUTHOR
 

@@ -17,7 +17,7 @@ $VERSION = sprintf("%d.%02d", q$Revision$ =~ /(\d+)\.(\d+)/);
 
 No::Dato - Norwegian dates
 
-=head1 SYNPOSIS
+=head1 SYNOPSIS
 
   use No::Dato qw(tekstdato helligdag helligdager);
 
@@ -132,11 +132,14 @@ sub helligdag (;$)
 
 =head2 helligdager($year)
 
-Denne rutinen vil returnere en linje for hver helligdag i året gitt
-som argument.  Hvis argumentet mangler vil vi bruke inneværende år.
-Hver linje er på formen:
+Denne rutinen vil returnere en liste av datostrenger, én for hver
+helligdag i året gitt som argument.  Hvis argumentet mangler vil vi
+bruke inneværende år.  Datostrengene er på formen:
 
    "ÅÅÅÅ-MM-DD Skjærtorsdag"
+
+Dvs. datoen formattert i henhold til ISO 8601 etterfulgt av navnet på
+helligdagen.  Listen vil være sortert på dato.
 
 =cut
 
