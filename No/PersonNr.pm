@@ -50,35 +50,19 @@ sub personnr_ok
     my($nr,$returndate) = @_;
     return undef unless defined($nr);
     $nr =~ s/[\s\-]+//g;
-    return 0 if $nr =~ /\D/;
-    return 0 if length($nr) != 11;
+    return "" if $nr =~ /\D/;
+    return "" if length($nr) != 11;
     my @nr = split(//, $nr);
 
     # Modulo 11 test
-    my $sum = $nr[8]*2 +
-              $nr[7]*5 + $nr[6]*4 +
-              $nr[5]*9 + $nr[4]*8 +
-              $nr[3]*1 + $nr[2]*6 +
-              $nr[1]*7 + $nr[0]*3;
-    my $rest = $sum % 11;
-    return 0 if $rest == 1;
-    if ($rest == 0) {
-	return 0 if $rest != $nr[9];
-    } else {
-	return 0 if 11 - $rest != $nr[9];
-    }
-
-    $sum = $nr[9]*2 + $nr[8]*3 +
-           $nr[7]*4 + $nr[6]*5 +
-           $nr[5]*6 + $nr[4]*7 +
-           $nr[3]*2 + $nr[2]*3 +
-	   $nr[1]*4 + $nr[0]*5;
-    $rest = $sum % 11;
-    return 0 if $rest == 1;
-    if ($rest == 0) {
-	return 0 if $rest != $nr[10];
-    } else {
-	return 0 if 11 - $rest != $nr[10];
+    my($vekt);
+    for $vekt ([ 3, 7, 6, 1, 8, 9, 4, 5, 2, 1, 0 ],
+	       [ 5, 4, 3, 2, 7, 6, 5, 4, 3, 2, 1 ]) {
+	my $sum = 0;
+	for (0..10) {
+	    $sum += $nr[$_] * $vekt->[$_];
+ 	}
+	return "" if $sum % 11;
     }
 
     # Extract the date part
@@ -97,7 +81,7 @@ sub personnr_ok
     } else {
 	$date[0] += 2000;
     }
-    return 0 unless _is_legal_date(@date);
+    return "" unless _is_legal_date(@date);
 
     return $returndate ? join("-", @date) : $nr;
 }
@@ -106,8 +90,8 @@ sub personnr_ok
 sub _is_legal_date
 {
     my($y,$m,$d) = @_;
-    return undef if $d < 1;
-    return undef if $m < 1 || $m > 12;
+    return if $d < 1;
+    return if $m < 1 || $m > 12;
 
     my $mdays = 31;
     if ($m == 2) {
@@ -116,7 +100,7 @@ sub _is_legal_date
     } elsif ($m == 4 || $m == 6 || $m == 9 || $m == 11) {
 	$mdays = 30;
     }
-    return undef if $d > $mdays;
+    return if $d > $mdays;
     1;
 }
 
@@ -132,7 +116,7 @@ sub er_mann
 {
     my $nr = personnr_ok(shift);
     croak "Feil i personnummer" unless $nr;
-    (int(substr($nr, 8, 1)) % 2) != 0;
+    substr($nr, 8, 1) % 2;
 }
 
 
@@ -149,23 +133,22 @@ sub er_kvinne { !er_mann(@_); }
 =head2 fodt_dato($nr)
 
 Vil returnere personens fødselsdato på formen "ÅÅÅÅ-MM-DD".  Rutinen
-returnerer I<undef> hvis nummeret er ugyldig.
+returnerer C<""> hvis nummeret er ugyldig.
 
 =cut
 
 sub fodt_dato
 {
-    my $dato = personnr_ok(shift, 1);
-    return undef unless $dato;
-    $dato;
+    personnr_ok(shift, 1);
 }
 
 1;
 
 =head1 BUGS
 
-Takler ikke fødselsdatoer før år 1900 og etter år 2000.  Hvis noen kan
-fortelle meg hva algoritmen er så ville jeg være takknemlig.
+Jeg er ikke helt sikker på om vi takler fødselsdatoer før år 1900 og
+etter år 2000.  Hvis noen kan fortelle meg hva algoritmen er så ville
+jeg være takknemlig.
 
 =head1 AUTHOR
 
