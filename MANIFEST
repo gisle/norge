@@ -1,11 +1,12 @@
-MANIFEST
-README
 LESMEG
+MANIFEST
 Makefile.PL
 No/Dato.pm
 No/KontoNr.pm
 No/PersonNr.pm
 No/Telenor.pm
-t/telenor.t
+README
 t/dato.t
 t/kontonr.t
+t/personnr.t
+t/telenor.t

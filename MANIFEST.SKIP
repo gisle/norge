@@ -1,0 +1,9 @@
+\.old$
+\.bak$
+CVS
+~$
+MANIFEST.SKIP
+^blib
+^Makefile$
+^pm_to_blib$
+
