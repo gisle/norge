@@ -1,6 +1,6 @@
 $|=1;
 
-print "1..6\n";
+print "1..7\n";
 
 use No::Sort;
 
