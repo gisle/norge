@@ -47,7 +47,7 @@ personnr_ok() kan inneholde ' ' eller '-'.
 
 sub personnr_ok
 {
-    my $nr = shift;
+    my($nr,$returndate) = @_;
     return undef unless defined($nr);
     $nr =~ s/[\s\-]+//g;
     return 0 if $nr =~ /\D/;
@@ -81,7 +81,43 @@ sub personnr_ok
 	return 0 if 11 - $rest != $nr[10];
     }
 
-    $nr;  # ok, return normalized number
+    # Extract the date part
+    my @date = reverse unpack("A2A2A2A3", $nr);
+    my $pnr = shift(@date);
+ 
+    # B-nummer -- midlertidig (max 6 mnd) personnr
+    $date[2] -= 30 if $date[2] > 40;
+
+    # Så var det det å kjenne igjen hvilket hundreår som er det riktige.
+    # Dette er implementert etter et ikke nødvendigvis troverdig rykte...
+    if ($pnr <= 500) {
+        $date[0] += 1900;
+    } elsif ($date[0] < 50) {
+	$date[0] += 2000;
+    } else {
+	$date[0] += 1800;
+    }
+    return 0 unless _is_legal_date(@date);
+
+    return $returndate ? join("-", @date) : $nr;
+}
+
+
+sub _is_legal_date
+{
+    my($y,$m,$d) = @_;
+    return undef if $d < 1;
+    return undef if $m < 1 || $m > 12;
+
+    my $mdays = 31;
+    if ($m == 2) {
+	$mdays = (($y % 4 == 0) && ($y % 100 != 0)) || ($y % 400 == 0)
+	  ? 29 : 28;
+    } elsif ($m == 4 || $m == 6 || $m == 9 || $m == 11) {
+	$mdays = 30;
+    }
+    return undef if $d > $mdays;
+    1;
 }
 
 
@@ -113,25 +149,14 @@ sub er_kvinne { !er_mann(@_); }
 =head2 fodt_dato($nr)
 
 Vil returnere personens fødselsdato på formen "ÅÅÅÅ-MM-DD".  Rutinen
-vil croake hvis nummeret er ugyldig.
+returnerer I<undef> hvis nummeret er ugyldig.
 
 =cut
 
 sub fodt_dato
 {
-    my $nr = personnr_ok(shift);
-    croak "Feil i personnummer" unless $nr;
-    my $dato = substr($nr, 0, 6);
-
-    # B-nummer -- midlertidig (max 6 mnd) personnr
-    substr($dato,0,1) =~ tr/4-7/0-3/;
-
-    $dato =~ s/^(\d\d)(\d\d)(\d\d)$/$3-$2-$1/;
-
-    # XXX: Så var det det å kjenne igjen hvilket hundreår som er det
-    # riktige.
-    $dato = "19$dato";
-
+    my $dato = personnr_ok(shift, 1);
+    return undef unless $dato;
     $dato;
 }
 
