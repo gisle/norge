@@ -112,7 +112,7 @@ sub samtale_pris
     my $price = $START_PRIS;
     while ($dur > 0) {
 	printf ">>> PRICE=%.2f DUR=%.3f HOUR=%.3f DAY=%d\n",
-	       $price, $dur, $hour+8, $weekday if $DEBUG;
+	       $price, $dur, $hour+$DAG_START, $weekday if $DEBUG;
 	if ($weekday >= 5 || $hour >= $DAG_SLUTT) {
 	    if (24 - $hour < $dur) {
 		# crossing day boundary
