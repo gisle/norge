@@ -18,7 +18,7 @@ No::Telenor - Calculate telephone call prices in Norway
 =head1 SYNOPSIS
 
   use No::Telenor qw(samtale_pris);
-  $kr = samtale_pris($time, 3600, "LFV");
+  $kr = samtale_pris($time, 3600, "N");
 
 
 =head1 DESCRIPTION
@@ -27,8 +27,8 @@ B<This documentation is written in Norwegian.>
 
 Denne modulen inneholder funksjonen samtale_pris().  Denne funksjonen
 vil beregne prisen på en telefonsamtale gitt tidspunkt, varighet og
-takst som parameter.  Funksjonen kjenner til sanntidstakstene som
-ble innført fra og med år 1997.  Forhåpentligvis vil jeg klare å
+takst som parameter.  Funksjonen kjenner til Telenors sanntidstakster
+som gjelder fra 1. juni 1999.  Forhåpentligvis vil jeg klare å
 oppdater funksjonen etterhvert som Telenor finner på nye sprell.
 
 =cut
@@ -37,14 +37,11 @@ oppdater funksjonen etterhvert som Telenor finner på nye sprell.
 %TAKSTER = (
         # Takstnavn                    Start  Dag    Natt   Dagtakst
 	#                              pris   takst  takst  periode
- L   => [ "Lokaltakst",                0.40,  0.25,  0.14,   8 => 17 ],
- LFV => [ "Lokaltakst Familie&Venner", 0.40,  0.25,  0.112,  8 => 17 ],
- R   => [ "Rikstakst",                 0.40,  0.60,  0.50,   8 => 17 ],
- RFV => [ "Rikstakst Familie&Venner",  0.32,  0.48,  0.40,   8 => 17 ],
-'L+' => [ "Lokaltakst Pluss",          0.37,  0.23,  0.13,   8 => 22 ],
-'R+' => [ "Rikstakst Pluss",           0.37,  0.55,  0.46,   8 => 22 ],
- M   => [ "Telenor Mobil",             0.40,  2.40,  2.40,   0 =>  0 ],
-'M+' => [ "Telenor Mobil Pluss",       0.37,  2.19,  2.19,   0 =>  0 ],
+ N   => [ "Norgespris",                0.45,  0.22,  0.14,   8 => 17 ],
+ TM  => [ "Telenor Mobil",             0.45,  1.69,  1.69,   0 => 0  ],
+ NC  => [ "NetCom Mobil",              0.45,  1.87,  1.87,   0 => 0  ],
+ 180 => [ "Opplysningen 180",          0.45,  9.00, 11.00,   8 => 20 ],
+ 181 => [ "UtenlandsOpplysningen 181", 6.00, 13.00, 15.00,   8 => 20 ],
 );
 
 # Det er greier å regne med takstene pr. time
@@ -60,8 +57,9 @@ if ($DEBUG) {
     }
 }
 
+=over
 
-=head2 samtale_pris($start, $varighet, $takst)
+=item samtale_pris($start, $varighet, $takst)
 
 Rutinen vil beregne samtale prisen i NOK.  Argumentet $start er
 starttidspunktet gitt som en standard perl 'time' verdi.  Argumentet
@@ -69,14 +67,13 @@ $varighet er samtalens varighet i sekunder.  Argumentet $takst er en
 kort streng som forteller hvilken takst som skal brukes.  Følgende
 takser er støttet:
 
-   L     Lokaltakst
-   LFV   Lokaltakst Familie&Venner
-   R     Rikstakst
-   RFV   Rikstakst Familie&Venner
-   L+    Lokaltakst Pluss
-   R+    Rikstakst Pluss
-   M     Telenor Mobil
-   M+    Telenor Mobil Pluss
+   N     Norgespris
+   TM    Telenor Mobil
+   NC    NetCom Mobil
+   180   Opplysningen 180
+   181   UtenlandsOpplysningen 181
+
+=back
 
 =cut
 
@@ -102,7 +99,8 @@ sub samtale_pris
 
     # Finn klokkeslett for startstidspunktet
     my($sec,$min,$hour,$d,$m,$y,$weekday) = localtime($start);
-    Carp::croak("Kjenner ikke takstene før 1997") if $y < 97;
+    Carp::croak("Kjenner ikke takstene før 1999-07-01")
+	  if $y < 99 || $y == 99 && $m < 6;
 
     # Gjør $hour og $dur om til desimaltall
     $hour += $min/60 + $sec / 3600;
@@ -149,8 +147,11 @@ __END__
 Prisberegningen kan bli unøyaktig hvis samtalen foregikk i overgangen
 mellom vinter- og sommertid eller omvendt.
 
+Prisberegningen tar ikke hensyn til at helgetakst skal benyttes på
+bevegelige helligdager.
+
 =head1 AUTHOR
 
-Gisle Aas <aas@sn.no>
+Gisle Aas <gisle@aas.no>
 
 =cut
