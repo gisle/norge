@@ -1,4 +1,4 @@
-print "1..51\n";
+print "1..54\n";
 
 use No::KontoNr qw(kontonr_ok kredittkortnr_ok mod_10 kontonr_f nok_f);
 
@@ -21,6 +21,11 @@ for ('52050603512',
      '82000148888',
      '08260122720',
      '82000127287',
+
+     # noen postgiro nr
+     '10 50905',
+     '1500206',
+     '1694801',
      ) {
     my $k = $_;
     $k =~ s/\D//g;
