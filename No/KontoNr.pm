@@ -44,7 +44,8 @@ Ingen av rutinene eksporteres implisitt.  Du må be om dem.
 
 Funksjonen kontonr_ok() vil returnere FALSE hvis kontonummeret gitt
 som argument ikke er gyldig.  Hvis nummeret er gyldig så vil
-funksjonen returnere $nr på standard form (11 siffer).  Nummeret som
+funksjonen returnere $nr på standard form (11 siffer for
+bankkontonummer og 7 siffer for gamle postgironummer) .  Nummeret som
 gis til kontonr_ok() kan inneholde blanke eller punktumer.
 
 =cut
@@ -54,14 +55,21 @@ sub kontonr_ok
     my $nr = shift || return 0;
     $nr =~ s/[ \.]//g;  # det er ok med mellomrom og punktum i nummeret
 
-    # Først et par trivielle sjekker
-    return 0 unless length($nr) == 11;
-    return 0 if $nr =~ /\D/;
+    return "" if $nr =~ /\D/;  # bare sifre skal gjenstå nå
+
+    my $last  = chop($nr);
+    $nr =~ s/^0000//;  # postgiro nr skrives av og til som 0000.XX.XXXXX
+    my $check;
+    if (length($nr) == 6) {        # postgiro nr
+        $check = mod_10($nr);
+    } elsif (length($nr) == 10) {  # vanlig bankkontonr
+        $check = mod_11($nr);
+    } else {
+        return "";  # ulovlig lengde
+    }
 
     # Siste siffer er kontrollsiffer, plukk det av
-    my $last  = chop($nr);
-    my $check = mod_11($nr);
-    return 0 if !defined($check) || $check != $last;
+    return "" if !defined($check) || $check != $last;
     return "$nr$last";
 }
 
@@ -78,6 +86,7 @@ sub kontonr_f
 {
     my $nr = kontonr_ok(shift);
     return "????.??.?????" unless $nr;
+    $nr = "0000$nr" if length($nr) == 7;
     $nr =~ s/^(\d{4})(\d\d)(\d{5})$/$1.$2.$3/;
     $nr;
 }
