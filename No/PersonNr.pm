@@ -68,12 +68,16 @@ sub personnr_ok
     # Extract the date part
     my @date = reverse unpack("A2A2A2A3", $nr);
     my $pnr = shift(@date);
- 
+
+    # Genererte nummer med +50 i måned [pere]
+    $date[1] -= 50 if $date[1] > 50;
+
     # B-nummer -- midlertidig (max 6 mnd) personnr
     $date[2] -= 40 if $date[2] > 40;
 
     # Så var det det å kjenne igjen hvilket hundreår som er det riktige.
-    if ($pnr < 500) {
+    # 900 er for genererte personnr.  Korrekt grenseverdi? [pere 1999-09-11]
+    if ($pnr < 500 || $pnr >= 900) {
         $date[0] += 1900;
     } elsif ($date[0] >= 55) {
 	# eldste person tildelt fødelsnummer er født i 1855.
