@@ -1,10 +1,9 @@
-Dette er en samling av perl moduler som prøver å gjøre det lettere å
-være perlprogrammerer i Norge.  Jeg har her prøvd å samle likt og
-ulikt av slikt som er spesielt for norske forhold.  Følgende moduler
-er med:
+Dette er en samling av perlmoduler som prøver å gjøre det lettere å være
+perlprogrammerer i Norge.  Jeg har her prøvd å samle likt og ulikt av slikt
+som er spesielt for norske forhold.  Følgende moduler er med:
 
 No::Dato
-  Formattering av datoer i henhold til norsk standard (på norsk)
+  Formattering av datoer i henhold til norsk standard (på norsk).
   Norske ukedager og månedsnavn.  Norske helligdager.
 
 No::KontoNr
@@ -31,11 +30,11 @@ siden du leser dette):
   make test
   make install
 
-Spørsmål eller forslag til ny funksjonalitet og forbedringer kan
-rettes til USENET News gruppen "no.perl" eller direkte til
+Spørsmål eller forslag til ny funksjonalitet og forbedringer kan rettes til
+USENET News gruppen "no.it.programmering.perl" eller direkte til
 forfatteren.
 
-© Gisle Aas 1997
+© 1997-1998 Gisle Aas <gisle@aas.no>
 
 Denne samlingen av perl moduler er å regne som fritt tilgjengelig
 programvare.  Du kan redistribuere eller modifisere den etter samme
