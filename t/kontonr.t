@@ -1,6 +1,6 @@
-print "1..43\n";
+print "1..49\n";
 
-use No::KontoNr qw(kontonr_ok modulus_10);
+use No::KontoNr qw(kontonr_ok kredittkortnr_ok mod_10 nok_f);
 
 $testno = 1;
 
@@ -47,8 +47,9 @@ for ('520506035123',  # for langt
     $testno++;
 }
 
-
-
+print "Kredittkortnr...\n";
+print "not " unless kredittkortnr_ok("5413 0666 9455 0196");
+print "ok $testno\n";  $testno++;
 
 print "Modulus 10 sjekk...\n";
 for (['1'          => 8],
@@ -67,8 +68,8 @@ for (['1'          => 8],
      ['66666'      => 9],
      ) {
     my($siffer, $forventet) = @$_;
-    my $m10 = modulus_10($siffer);
-    print "modulus_10($siffer) => $m10";
+    my $m10 = mod_10($siffer);
+    print "mod_10($siffer) => $m10";
     if ($m10 != $forventet) {
 	print " (forventet: $forventet)\n";
 	print "not ";
@@ -79,3 +80,18 @@ for (['1'          => 8],
     $testno++;
 }
 
+print "Tester formatering av kronebeløp...\n";
+print "not " unless nok_f(3.5) eq "3,50";
+print "ok $testno\n"; $testno++;
+
+print "not " unless nok_f(3) eq "3,- ";
+print "ok $testno\n"; $testno++;
+
+print "not " unless nok_f(100) eq "100,- ";
+print "ok $testno\n"; $testno++;
+
+print "not " unless nok_f(49_998.50) eq "49.998,50";
+print "ok $testno\n"; $testno++;
+
+print "not " unless nok_f(1_000_000_000_000) eq "1.000.000.000.000,- ";
+print "ok $testno\n"; $testno++;
