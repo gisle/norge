@@ -1,12 +1,16 @@
+ChangeLog
 LESMEG
 MANIFEST
 Makefile.PL
 No/Dato.pm
 No/KontoNr.pm
 No/PersonNr.pm
+No/Sort.pm
 No/Telenor.pm
 README
+eg/ppplog
 t/dato.t
 t/kontonr.t
 t/personnr.t
+t/sort.t
 t/telenor.t
