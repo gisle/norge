@@ -1,0 +1,17 @@
+Dette er en samling av perl moduler som gjør det lettere å være
+perlprogrammerer i Norge.  Jeg har her prøvd å samle likt og ulikt av
+slikt som er spesielt for Norge.  Jeg har følgende idéer:
+
+No::Dato
+  Formattering av datoer i henhold til norsk standard (på norsk)
+  Norske ukedager og månedsnavn.  Norske helligdager.
+
+No::Telenor
+  Beregne priser på telefonsamtaler i henhold til Telenors satser
+
+No::PersonNr
+  Validere personnummer
+
+No::KontoNr
+  Validere bank- og postkontonummer
+  Modulus 10 algiritme for å lage KID

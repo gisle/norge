@@ -1,0 +1,11 @@
+MANIFEST
+README
+LESMEG
+Makefile.PL
+No/Dato.pm
+No/KontoNr.pm
+No/PersonNr.pm
+No/Telenor.pm
+t/telenor.t
+t/dato.t
+t/kontonr.t
