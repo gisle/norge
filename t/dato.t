@@ -5,7 +5,7 @@ print "1..15\n";
 
 $a = tekstdato(timelocal(0,0,12,2,1,97));
 print "$a\n";
-print "not " unless $a eq "Søndag, 2. Februar 1997";
+print "not " unless $a eq "Søndag, 2. februar 1997";
 print "ok 1\n";
 
 # Er det noe spesielt med dagen idag?
