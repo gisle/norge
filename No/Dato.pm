@@ -5,12 +5,44 @@ use Carp ();
 
 require Exporter;
 @ISA=qw(Exporter);
-@EXPORT_OK = qw(tekstdato helligdag helligdager);
+@EXPORT_OK = qw(tekstdato helligdag helligdager @UKEDAGER @MANEDER);
 
 $VERSION = sprintf("%d.%02d", q$Revision$ =~ /(\d+)\.(\d+)/);
 
 use strict;
 use vars qw(%SPECIAL_DAYS @UKEDAGER @MANEDER);
+
+
+=head1 NAME
+
+No::Dato - Norwegian dates
+
+=head1 SYNPOSIS
+
+  use No::Dato qw(tekstdato helligdag helligdager);
+
+  print tekstdato(time), "\n";
+  if (helligdag(time)) {
+      print "Idag er det ", helligdag(time), "\n";
+  }
+
+  for (helligdager()) {
+      print "$_\n";
+  }
+
+
+=head1 DESCRIPTION
+
+B<This documentation is written in Norwegian.>
+
+Denne modulen tilbyr funksjoner for å håndtere det som er spesielt med
+datoer på norsk.  Dette gjelder blandt annet å finne fram til de
+norske helligdagene.
+
+=cut
+
+
+
 
 %SPECIAL_DAYS = (
   "Nyttårsdag"            => '01-01',
@@ -35,12 +67,37 @@ use vars qw(%SPECIAL_DAYS @UKEDAGER @MANEDER);
 
 my %hellig_cache = ();
 
+
+=head2 tekstdato($time)
+
+Denne rutinen returnerer en dato formatert på formen:
+
+  Fredag, 7. Februar 1997
+
+Argumentet er en vanlig perl $time verdi.  Hvis argumentet utelates så
+benyttes dagens dato.
+
+=cut
+
 sub tekstdato (;$)
 {
     my $time = shift || time;
     my($d,$m,$y,$wd) = (localtime $time)[3,4,5,6];
     sprintf "%s, %d. %s %d", $UKEDAGER[$wd], $d, $MANEDER[$m], $y+1900;
 }
+
+
+=head2 helligdag($time)
+
+Rutinen avgjør om en gitt dato er en norsk helligdag eller ikke.  Hvis
+det er en helligdag så vil navnet på helligdagen bli returnert.  Hvis
+det er en vanlig hverdag så vil en tom streng (som er FALSE i perl)
+bli returnert.
+
+Argumentet kan være en vanlig $time verdi eller en streng på formen
+"ÅÅÅÅ-MM-DD".
+
+=cut
 
 sub helligdag (;$)
 {
@@ -71,6 +128,17 @@ sub helligdag (;$)
     }
     $day;
 }
+
+
+=head2 helligdager($year)
+
+Denne rutinen vil returnere en linje for hver helligdag i året gitt
+som argument.  Hvis argumentet mangler vil vi bruke inneværende år.
+Hver linje er på formen:
+
+   "ÅÅÅÅ-MM-DD Skjærtorsdag"
+
+=cut
 
 sub helligdager (;$)
 {
@@ -105,6 +173,8 @@ sub helligdager (;$)
     }
     @days;
 }
+
+
 
 sub easter_day ($)
 {
@@ -155,11 +225,13 @@ sub easter_day ($)
     $easter;
 }
 
+
 sub leap_year ($)
 {
     my $year = shift;
     (($year % 4 == 0) && ($year % 100 != 0)) || ($year % 400 == 0);
 }
+
 
 sub dayno_to_date($$)
 {
@@ -181,5 +253,17 @@ sub dayno_to_date($$)
     ($month, $dayno);
 }
 
-
 1;
+__END__
+
+
+=head1 SEE ALSO
+
+L<HTTP::Date>, som kan konvertere til og fra ISO 8601 formaterte
+datoer (ÅÅÅÅ-MM-DD).
+
+=head1 AUTHOR
+
+Gisle Aas <aas@sn.no>
+
+=cut
