@@ -35,12 +35,12 @@ modulus 11 kontrollsiffer.  Disse algoritmene brukes blandt annet hvis
 du vil generere KID når du skal fylle ut giroblanketter.  De finnes
 også en fuksjon som kan brukes for å formatere kronebeløp.
 
-Ingen av rutinene eksporteres implisitt.  Du må be om dem.
+Ingen av funksjonene eksporteres implisitt.  Du må be om dem.
+Følgende funksjoner er tilgjengelig:
 
-=head1 FUNCTIONS
+=over
 
-
-=head2 kontonr_ok($nr)
+=item kontonr_ok($nr)
 
 Funksjonen kontonr_ok() vil returnere FALSE hvis kontonummeret gitt
 som argument ikke er gyldig.  Hvis nummeret er gyldig så vil
@@ -74,7 +74,7 @@ sub kontonr_ok
 }
 
 
-=head2 kontonr_f($nr)
+=item kontonr_f($nr)
 
 Funksjonen kontonr_f() vil formattere et kontonummer på standard form
 ("####.##.#####").  Hvis kontonummeret ikke er gyldig så byttes alle
@@ -92,7 +92,7 @@ sub kontonr_f
 }
 
 
-=head2 kredittkortnr_ok($nr)
+=item kredittkortnr_ok($nr)
 
 Funksjonen kredittkortnr_ok() vil returnere FALSE hvis
 kredittkortnummeret gitt som argument ikke er gyldig.  Hvis nummeret
@@ -135,7 +135,7 @@ sub kredittkortnr_ok
 }
 
 
-=head2 nok_f($tall)
+=item nok_f($tall)
 
 Denne funksjonen vil formatere tall på formen:
 
@@ -158,7 +158,7 @@ sub nok_f
 }
 
 
-=head2 mod_10($tall)
+=item mod_10($tall)
 
 Denne funksjonen regner ut modulus 10 kontrollsifferet til tallet gitt
 som argument.  Hvis argumentet inneholder tegn som ikke er siffer så
@@ -188,7 +188,7 @@ sub mod_10
 }
 
 
-=head2 mod_11($tall)
+=item mod_11($tall)
 
 Denne funksjonen regner ut modulus 11 kontrollsifferet til tallet gitt
 som argument.  Hvis argumentet inneholder tegn som ikke er siffer så
@@ -214,13 +214,15 @@ sub mod_11
 
 1;
 
+=back
+
 =head1 SEE ALSO
 
 L<Business::CreditCard>
 
 =head1 AUTHOR
 
-Gisle Aas <aas@sn.no>
+Gisle Aas <gisle@aas.no>
 
 =cut
 

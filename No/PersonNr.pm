@@ -32,11 +32,12 @@ siffrene i personnummerene er kontrollsiffre og må stemme overens med
 resten for at det skal være et gyldig nummer.  Modulen inneholder også
 funksjoner for å bestemme personens kjønn og personens fødselsdato.
 
-Ingen av rutinene eksporteres implisitt.  Du må be om dem.
+Ingen av rutinene eksporteres implisitt.  Du må be om dem.  Følgende
+funksjoner er tilgjengelig:
 
-=head1 FUNCTIONS
+=over
 
-=head2 personnr_ok($nr)
+=item personnr_ok($nr)
 
 Funksjonen personnr_ok() vil returnere FALSE hvis personnummeret gitt
 som argument ikke er gyldig.  Hvis nummeret er gyldig så vil
@@ -111,7 +112,7 @@ sub _is_legal_date
 }
 
 
-=head2 er_mann($nr)
+=item er_mann($nr)
 
 Vil returnere TRUE hvis $nr tilhører en mann.  Rutinen vil croake hvis
 nummeret er ugyldig.
@@ -126,7 +127,7 @@ sub er_mann
 }
 
 
-=head2 er_kvinne($nr)
+=item er_kvinne($nr)
 
 Vil returnere TRUE hvis $nr tilhører en kvinne.  Rutinen vil croake
 hvis nummeret er ugyldig.
@@ -136,7 +137,7 @@ hvis nummeret er ugyldig.
 sub er_kvinne { !er_mann(@_); }
 
 
-=head2 fodt_dato($nr)
+=item fodt_dato($nr)
 
 Vil returnere personens fødselsdato på formen "ÅÅÅÅ-MM-DD".  Rutinen
 returnerer C<""> hvis nummeret er ugyldig.
@@ -150,12 +151,14 @@ sub fodt_dato
 
 1;
 
+=back
+
 =head1 BUGS
 
 Denne koden vil få problemer for personer født etter år 2054.
 
 =head1 AUTHOR
 
-Gisle Aas <aas@sn.no>
+Gisle Aas <gisle@aas.no>
 
 =cut
