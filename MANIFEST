@@ -9,6 +9,7 @@ No/Sort.pm
 No/Telenor.pm
 README
 eg/ppplog
+persnr.note
 t/dato.t
 t/kontonr.t
 t/personnr.t
