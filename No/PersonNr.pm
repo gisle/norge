@@ -120,6 +120,10 @@ sub fodt_dato
     my $nr = personnr_ok(shift);
     croak "Feil i personnummer" unless $nr;
     my $dato = substr($nr, 0, 6);
+
+    # B-nummer -- midlertidig (max 6 mnd) personnr
+    substr($dato,0,1) =~ tr/4-7/0-3/;
+
     $dato =~ s/^(\d\d)(\d\d)(\d\d)$/$3-$2-$1/;
 
     # XXX: Så var det det å kjenne igjen hvilket hundreår som er det
