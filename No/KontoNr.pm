@@ -69,7 +69,7 @@ sub kontonr_ok
 
 Funksjonen kredittkortnr_ok() vil returnere FALSE hvis
 kredittkortnummeret gitt som argument ikke er gyldig.  Hvis nummeret
-er gyldig så vil funksjonen returnere $nr på standard form.  Nummeret
+er gyldig så vil funksjonen returnere kortselskapets navn.  Nummeret
 som gis til kredittkortnr_ok() kan inneholde blanke eller punktumer.
 
 =cut
@@ -78,16 +78,33 @@ sub kredittkortnr_ok
 {
     my $nr = shift || return 0;
     $nr =~ s/[ \.]//g;  # det er ok med mellomrom og punktum i nummeret
-
-    #XXX: Må egentlig sjekke prefix for å finne ut hvor langt nummeret
-    # skal være.  Forsjellige selskaper opererer med ulik lengde.
-    return 0 unless length($nr) == 16;
     return 0 if $nr =~ /\D/;
+
+    # Basert på http://www.websitter.com/cardtype.html
+    my $type;
+    if ($nr =~ /^5[1-5]/) {
+	$type = "MasterCard";
+	return 0 if length($nr) != 16;
+    } elsif ($nr =~ /^4/) {
+	$type = "VISA";
+	return 0 if length($nr) != 13 and length($nr) != 16;
+    } elsif ($nr =~ /^3[47]/) {
+	$type = "American Express";
+	return 0 if length($nr) != 15;
+    } elsif ($nr =~ /^30[0-5]/ || $nr =~ /^3[68]/) {
+	$type = "Diners Club";
+	return 0 if length($nr) != 14;
+    } elsif ($nr =~ /^6011/) {
+	$type = "Discover";
+	return 0 if length($nr) != 16;
+    } else {
+	return 0;
+    }
 
     # Siste siffer er kontrollsiffer
     my $last  = chop($nr);
     return 0 if $last != mod_10($nr);
-    return $nr;
+    return $type;
 }
 
 
@@ -172,6 +189,10 @@ sub mod_11
 }
 
 1;
+
+=head1 SEE ALSO
+
+L<Business::CreditCard>
 
 =head1 AUTHOR
 
