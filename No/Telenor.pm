@@ -28,8 +28,8 @@ B<This documentation is written in Norwegian.>
 Denne modulen inneholder funksjonen samtale_pris().  Denne funksjonen
 vil beregne prisen på en telefonsamtale gitt tidspunkt, varighet og
 takst som parameter.  Funksjonen kjenner bare til sanntidstakstene som
-ble innført i 1997.  Forhåpentligvis vil jeg klare å oppdater
-funksjonen etterhvert som Telenor finner på nye sprell.
+ble innført fra og med i 1997.  Forhåpentligvis vil jeg klare å
+oppdater funksjonen etterhvert som Telenor finner på nye sprell.
 
 =cut
 
@@ -143,6 +143,11 @@ sub samtale_pris
 
 1;
 __END__
+
+=head1 BUGS
+
+Prisberegningen kan bli unøyaktig hvis samtalen foregikk i overgangen
+mellom vinter- og sommertid eller omvendt.
 
 =head1 AUTHOR
 
