@@ -70,7 +70,7 @@ sub personnr_ok
     my $pnr = shift(@date);
  
     # B-nummer -- midlertidig (max 6 mnd) personnr
-    $date[2] -= 30 if $date[2] > 40;
+    $date[2] -= 40 if $date[2] > 40;
 
     # Så var det det å kjenne igjen hvilket hundreår som er det riktige.
     if ($pnr < 500) {
