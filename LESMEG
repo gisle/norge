@@ -17,9 +17,6 @@ No::PersonNr
 No::Sort
   Norsk sortering av Latin1 tekst.  Også latin1 "up/down casing".
 
-No::Telenor
-  Beregne priser på telefonsamtaler i henhold til Telenors satser
-
 Du må ha perl versjon 5.002 eller bedre for å bruke disse modulene.
 Installasjonen foregår ved å kjøre følgende kommandoer etter at du har
 pakket ut distribusjonen (noe som du selvfølgelig allerede har gjort
@@ -34,7 +31,7 @@ Spørsmål eller forslag til ny funksjonalitet og forbedringer kan rettes til
 USENET News gruppen "no.it.programmering.perl" eller direkte til
 forfatteren.
 
-© 1997-1999 Gisle Aas <gisle@aas.no>
+© 1997-1999,2003 Gisle Aas <gisle@aas.no>
 
 Denne samlingen av perl moduler er å regne som fritt tilgjengelig
 programvare.  Du kan redistribuere eller modifisere den etter samme

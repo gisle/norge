@@ -6,7 +6,6 @@ No/Dato.pm
 No/KontoNr.pm
 No/PersonNr.pm
 No/Sort.pm
-No/Telenor.pm
 README
 eg/ppplog
 persnr.note
@@ -14,4 +13,4 @@ t/dato.t
 t/kontonr.t
 t/personnr.t
 t/sort.t
-t/telenor.t
+
