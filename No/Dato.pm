@@ -7,10 +7,10 @@ require Exporter;
 @ISA=qw(Exporter);
 @EXPORT_OK = qw(tekstdato helligdag helligdager @UKEDAGER @MANEDER);
 
-$VERSION = sprintf("%d.%02d", q$Revision$ =~ /(\d+)\.(\d+)/);
-
 use strict;
-use vars qw(%SPECIAL_DAYS @UKEDAGER @MANEDER);
+use vars qw(%SPECIAL_DAYS @UKEDAGER @MANEDER $VERSION);
+
+$VERSION = sprintf("%d.%02d", q$Revision$ =~ /(\d+)\.(\d+)/);
 
 
 =head1 NAME
