@@ -1,6 +1,6 @@
-print "1..49\n";
+print "1..51\n";
 
-use No::KontoNr qw(kontonr_ok kredittkortnr_ok mod_10 nok_f);
+use No::KontoNr qw(kontonr_ok kredittkortnr_ok mod_10 kontonr_f nok_f);
 
 $testno = 1;
 
@@ -22,7 +22,9 @@ for ('52050603512',
      '08260122720',
      '82000127287',
      ) {
-    print "not " unless kontonr_ok($_);
+    my $k = $_;
+    $k =~ s/\D//g;
+    print "not " unless kontonr_ok($_) eq $k;
     print "ok $testno\n";
     $testno++;
 }
@@ -79,6 +81,13 @@ for (['1'          => 8],
     print "ok $testno\n";
     $testno++;
 }
+
+print "Tester formattering av kontonummer...\n";
+print "not " unless kontonr_f("5205 06 03512") eq "5205.06.03512";
+print "ok $testno\n"; $testno++;
+
+print "not " unless kontonr_f("") eq "????.??.?????";
+print "ok $testno\n"; $testno++;
 
 print "Tester formatering av kronebeløp...\n";
 print "not " unless nok_f(3.5) eq "3,50";
