@@ -5,6 +5,7 @@ Makefile.PL
 No/Dato.pm
 No/KontoNr.pm
 No/PersonNr.pm
+No/Skatt.pm
 No/Sort.pm
 README
 eg/ppplog
@@ -12,5 +13,6 @@ persnr.note
 t/dato.t
 t/kontonr.t
 t/personnr.t
+t/skatt.t
 t/sort.t
 

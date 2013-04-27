@@ -14,6 +14,9 @@ No::KontoNr
 No::PersonNr
   Validere personnummer og ekstrahere diverse info fra nummeret.
 
+No::Skatt
+  Beregn hva skatten din var/vil bli.
+
 No::Sort
   Norsk sortering av Latin1 tekst.  Også latin1 "up/down casing".
 
@@ -31,7 +34,7 @@ Spørsmål eller forslag til ny funksjonalitet og forbedringer kan rettes til
 USENET News gruppen "no.it.programmering.perl" eller direkte til
 forfatteren.
 
-© 1997-1999,2003 Gisle Aas <gisle@aas.no>
+© 1997-1999,2003,2013 Gisle Aas <gisle@aas.no>
 
 Denne samlingen av perl moduler er å regne som fritt tilgjengelig
 programvare.  Du kan redistribuere eller modifisere den etter samme
