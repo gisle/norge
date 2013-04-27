@@ -31,6 +31,8 @@ my %satser = (
 
 sub satser {
     my $year = shift;
+    die "Don't know the tax rates in Norway for the year $year"
+	unless exists $satser{$year};
     my %s;
     @s{qw(pf mf_p mf_min mf_max fmf ktax_p stax_p toptax ta2_p ta3_p tao_p ta_min ftax_p ftax_lim)} = @{$satser{$year}};
     my @t = @{$s{toptax} || []};
