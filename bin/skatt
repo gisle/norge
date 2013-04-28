@@ -5,12 +5,12 @@ use No::Skatt qw(skatt);
 
 my $inntekt = 40_000;
 
-for (0..25) {
+while ($inntekt < 11_000_000) {
     my $skatt_1 = skatt(lonnsinntekt => $inntekt);
     my $skatt_1_marg = (skatt(lonnsinntekt => $inntekt+1000) - $skatt_1)/10;
     my $skatt_2 = skatt(lonnsinntekt => $inntekt/2, kapitalinntekt => $inntekt/2);
     my $skatt_3 = skatt(kapitalinntekt => $inntekt);
     my $skatt_3_marg = (skatt(kapitalinntekt => $inntekt+1000) - $skatt_3)/10;
     printf "%d,%.3f,%.3f,%.3f,%.3f,%.3f\n", $inntekt, $skatt_1/$inntekt, $skatt_1_marg/100, $skatt_2/$inntekt, $skatt_3/$inntekt, $skatt_3_marg/100;
-    $inntekt = $inntekt * 1.25;
+    $inntekt = $inntekt * 1.1;
 }
