@@ -61,8 +61,8 @@ sub skatt {
 
     $p{personfradrag} = min($satser{pf}, $p{bruttolonn});
     $p{minstefradrag} = max(min($p{lonnsinntekt}*$satser{mf_p}/100, $satser{mf_max}), $satser{mf_min});
-    $p{inntekt} = max($p{bruttolonn} - $p{personfradrag} - $p{minstefradrag} - $p{fradrag}, 0);
-    $p{skatt_inntekt} = $p{inntekt} * ($satser{ktax_p} + $satser{stax_p})/100;
+    $p{inntekt} = max($p{bruttolonn} - $p{minstefradrag} - $p{fradrag}, 0);
+    $p{skatt_inntekt} = max($p{inntekt} - $p{personfradrag}, 0) * ($satser{ktax_p} + $satser{stax_p})/100;
     $p{skatt_trygdeavgift} = max(min($p{lonnsinntekt}*$satser{ta2_p}/100 + $p{overskudd_naring}*$satser{ta3_p}/100,
 				         ($p{lonnsinntekt} + $p{overskudd_naring} - $satser{ta_min}) * $satser{tao_p}/100),
 				     0);
